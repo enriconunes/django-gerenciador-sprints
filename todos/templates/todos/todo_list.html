@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+    <title>Sprints Django</title>
+  </head>
+  <body class="bg-gray-50">
+
+    <nav class="bg-gray-900 h-12 flex items-center px-3">
+      <div class="">
+        <a class="text-gray-100 text-lg font-medium" href="{% url 'todo_list' %}">Sprints Django</a>
+      </div>
+    </nav>
+
+    <main class="max-w-5xl mx-3 md:mx-auto">
+        <h1 class="text-3xl w-full text-center py-4 text-gray-700 font-medium mt-4 mb-2">Sprints Listing</h1>
+
+        <div class="mb-8 w-full flex justify-end">
+            <a class="px-3 py-2 rounded-md bg-blue-500 text-white font-medium" href="{% url 'todo_create' %}">Create a New Sprint</a>
+        </div>
+
+        {% comment %} grid {% endcomment %}
+        <div class="max-w-screen-lg mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for todo in todo_list %}
+                <div class="bg-white border border-gray-300 shadow-md pb-4 {% if todo.finishedAt %}bg-green-100{% else %}bg-yellow-100{% endif %}">
+
+                    <p class="text-lg w-full text-left text-gray-100 bg-gray-800 pl-3 py-2 font-semibold">{{ todo.title }}</p>
+
+                    <div class="w-full px-4 mt-3">
+                        <p class="text-gray-800 font-medium leading-5 mb-2">Project: {{ todo.project }}</p>
+                        <p class="text-gray-700">{{ todo.description }}</p>
+                        <p class="text-gray-600 mt-4 text-sm">Criated At: {{ todo.createdAt }}</p>
+                        <p class="text-gray-600 text-sm">Deadline: {{ todo.deadline }}</p>
+                        <p class="text-gray-600 text-sm">Finished At: {{ todo.finishedAt|default:"-" }}</p>
+                        <div class="mt-4 flex justify-center items-center">
+                            <a href="{% url 'todo_complete' pk=todo.pk %}" class="mr-2 {% if todo.finishedAt %}pointer-events-none opacity-50 cursor-not-allowed{% endif %}">
+                                <img class="max-w-10" src="{% static 'img/checked.png' %}" alt="check">
+                            </a>
+                            <a href="{% url 'todo_update' pk=todo.pk %}" class="mr-2 {% if todo.finishedAt %}pointer-events-none opacity-50 cursor-not-allowed{% endif %}">
+                                <img class="max-w-10" src="{% static 'img/pencil.png' %}" alt="edit">
+                            </a>
+                            <a href="{% url 'todo_delete' pk=todo.pk %}">
+                                <img class="max-w-10" src="{% static 'img/delete.png' %}" alt="delete">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 h-12 flex items-center justify-center px-3 mt-12">
+      <div class="">
+        <a class="text-gray-100 text-sm font-medium" href="{% url 'todo_list' %}">Sprints Django - Enrico Nunes</a>
+      </div>
+    </footer>
+
+  </body>
+</html>

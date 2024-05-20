@@ -1,0 +1,51 @@
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+    <title>Sprints Django</title>
+  </head>
+  <body class="bg-gray-50">
+
+    <nav class="bg-gray-900 h-12 flex items-center px-3">
+      <div class="">
+        <a class="text-gray-100 text-lg font-medium" href="{% url 'todo_list' %}">Sprints Django</a>
+      </div>
+    </nav>
+
+    <main class="max-w-5xl mx-3 md:mx-auto">
+
+        {% block content %}
+          {% if todo.pk %}
+              <h1 class="text-3xl text-gray-700 font-medium mt-4 mb-2 w-full text-center py-4">Update a Sprint</h1>
+          {% else %}
+              <h1 class="text-3xl text-gray-700 font-medium mt-4 mb-2 w-full text-center py-4">Add a New Sprint</h1>
+          {% endif %}
+        {% endblock %}
+        
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form|crispy }}
+
+            <button class="w-full bg-blue-500 text-white py-2 mt-4 text-center rounded-md" type="submit">Submit</button>
+            <div class="mt-2 py-2 w-full rounded-md bg-gray-500 text-center">
+              <a href="{% url 'todo_list' %}" class=" w-full block text-white" type="submit">Cancel</a>
+            </div>
+        </form>
+
+    </main>
+
+    <footer class="bg-gray-900 h-12 flex items-center justify-center px-3 mt-48">
+      <div class="">
+        <a class="text-gray-100 text-sm font-medium" href="{% url 'todo_list' %}">Sprints Django - Enrico Nunes</a>
+      </div>
+    </footer>
+
+  </body>
+</html>

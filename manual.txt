@@ -1,0 +1,64 @@
+1. Criar ambiente virtual para gerenciar as dependencias e bibliotecas deste projeto
+python -m venv .venv
+(-m = modulo, ou seja, criar um módulo venv chamado .venv)
+(venv = virtual enviroment - ambiente virtual)
+
+2. Ativar este ambiente virtual
+.\.venv\Scripts\activate
+Mas para isso, antes, deve-se alterar as políticas do powershell para executar scripts externos
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+3. Agora é possível observar que os comandos do powershell terão (.venv) no início, o que significa que o ambiente está ativo e todas as instalações de pacotes python serão feitas dentro deste ambiente.
+
+4. Instalar pyhton com o gerenciador de pacotes do python pip
+pip install django
+É possível ver que o django e outras bibliotecas estão identificadas em ./.venv/Lib
+
+5. Usar django para criar a estrutura básica do projeto
+django-admin startproject setup .
+Isso cria uma pasta com alguns arquivos de configuracao. Pode-se determinar o nome dessa pasta como o nome do projeto, entretanto, como é uma pasta de configurações, é uma boa prática definir como setup entre os desenvolvedores.
+
+6. Já é possivel executar o projeto para verificar se está funcionando
+python manage.py runserver
+
+Conceitos:
+- APP: Partes de um projeto responsável por um contexto (ex: app responsável pelo dashboard e app responsável pelo gerenciamento de users)
+- Projeto: Conjunto de apps que juntos (trabalham juntos) formam um projeto completo.
+
+7. Criar uma APP
+python manage.py startapp todos
+(onde to dos é o nome do app)
+
+8. Instalar a APP
+As apps se assemelham à modulos, onde precisam ser integrados ao projeto (similar também às dependencias). 
+As 'dependencias' instaladas podem ser vistas em INSTALLED_APPS em ./setup/settings.py
+Para fazer a instalação, basta adicinar uma nova linha nessa lista com o nome do projeto. Neste caso, 'todos'
+Agora a app já faz parte do projeto.
+
+Conceitos:
+- Model: Responsável pela relação com a base de dados
+- Template: Visualização dos dados, interação com os utilizadores (HTML)
+- Views: Responsável por fazer a comunicação entre o Template e o Model. Lógica por trás que define o que é feito de acordo com as requisições do user. Recebe uma requisição e retorna uma resposta.
+
+INICIO:
+
+1. Criar uma view home()
+2. Configurar uma rota para essa funcao em setup/urls
+3. em /todos criar /templates/todos
+4. apos criar o template, retorná-lo na view renderizando
+* a url chama a view e a view retorna o template
+
+MODELS BASE DE DADOS
+- Criar model do Todo (modelagem da tabela Todo) em models.py
+- Gerar a tabela definida no model. É possível ver que o arquivo db.sqlite3 foi criado logo no início do projeto. Para gerar as tabelas no db.sqlite3 usa-se o comando python manage.py migrate. Serão criadas diversas tabelas, não incluindo a Todo que criamos, porque é preciso adicioná-la nas migrations com o comando python manage.py makemigrations. Será criado um arquivo 0001_initial.py que é a migration responsável por criar a tabela com base no model. Com as migrações podemos gerenciar os versionamentos da base de dados. Após isso, rodar novamente o python manage.py migrate.
+
+CONFIGURAÇÕES ADICIONAIS
+Em settings.py do setup, remover o texto limpo de SECRET_KEY = 'django-insecure-e=$@_(*jhoxu=ffewf2h6^@!l6mttmjz1__c@eah^4t8f-c^%z' por questões de segurança. Para isso, usar a biblioteca pip install python-decouple. Após isso, criar .env na raiz do projeto e colocar a SECRET_KEY. Em settings.py, atualizar passando a KEY do .env em vez de manter a senha exposta.
+
+CRIAÇÃO DAS PAGINAS
+PAGINA DE LISTAGEM DAS TAREFAS
+Em ./todos/templates/todos criar /todo_list.html, que será a página html usada no return render da classe todo_list nas views.py. Essa classe é importada em urls.py e definida na rota "/".
+
+TAILWIND
+Rodar com
+npx tailwindcss -i ./src/styles.css -o ./static/css/tailwind.css --watch
